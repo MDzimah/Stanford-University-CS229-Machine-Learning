@@ -1,5 +1,8 @@
 import util
 import numpy as np
+from pathlib import Path
+
+DATA_DIR = Path(__file__).parent
 
 def example_weights():
     """This is an example function that returns weights.
@@ -82,16 +85,16 @@ def compute_predictions(X, weights, step_fn=True):
     return o
 
 if __name__ == "__main__":
-    x, y = util.load_dataset('train.csv', add_intercept=True)
+    x, y = util.load_dataset(DATA_DIR / 'train.csv', add_intercept=True)
 
     step_weights = optimal_step_weights()
     step_predict = lambda data: compute_predictions(data, step_weights, step_fn=True)
     step_y_pred = step_predict(x)
     print('Step function accuracy is: ' + str(np.mean(step_y_pred == y)))
-    util.plot(x, y, step_predict, save_path='step_weights.pdf')
+    util.plot(x, y, step_predict, save_path=DATA_DIR / 'step_weights.pdf')
 
     linear_weights = optimal_linear_weights()
     linear_predict = lambda data: compute_predictions(data, linear_weights, step_fn=False)
     linear_y_pred = linear_predict(x)
     print('Linear function accuracy is: ' + str(np.mean(linear_y_pred == y)))
-    util.plot(x, y, linear_predict, save_path='linear_weights.pdf')
+    util.plot(x, y, linear_predict, save_path=DATA_DIR / 'linear_weights.pdf')

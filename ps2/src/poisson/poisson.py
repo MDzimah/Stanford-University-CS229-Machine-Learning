@@ -1,6 +1,9 @@
 import numpy as np
 import util
 import matplotlib.pyplot as plt
+from pathlib import Path
+
+DATA_DIR = Path(__file__).parent
 
 def main(lr, train_path, eval_path, save_path):
     """Problem: Poisson regression with gradient ascent.
@@ -78,6 +81,6 @@ pass
 
 if __name__ == '__main__':
     main(lr=1e-5,
-        train_path='train.csv',
-        eval_path='valid.csv',
-        save_path='poisson_pred.txt')
+        train_path=DATA_DIR / 'train.csv',
+        eval_path=DATA_DIR / 'valid.csv',
+        save_path=DATA_DIR / 'poisson_pred.txt')

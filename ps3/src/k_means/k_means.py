@@ -5,6 +5,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 import random
+from pathlib import Path
+
+DATA_DIR = Path(__file__).parent
 
 
 def init_centroids(num_clusters, image):
@@ -154,7 +157,7 @@ def main(args):
     plt.imshow(image)
     plt.title('Original small image')
     plt.axis('off')
-    savepath = os.path.join('.', 'orig_small.png')
+    savepath = DATA_DIR / 'orig_small.png'
     plt.savefig(savepath, transparent=True, format='png', bbox_inches='tight')
 
     # Initialize centroids
@@ -176,7 +179,7 @@ def main(args):
     plt.imshow(image)
     plt.title('Original large image')
     plt.axis('off')
-    savepath = os.path.join('.', 'orig_large.png')
+    savepath = DATA_DIR / 'orig_large.png'
     plt.savefig(fname=savepath, transparent=True, format='png', bbox_inches='tight')
 
     # Update large image with centroids calculated on small image
@@ -190,7 +193,7 @@ def main(args):
     plt.imshow(image_clustered)
     plt.title('Updated large image')
     plt.axis('off')
-    savepath = os.path.join('.', 'updated_large.png')
+    savepath = DATA_DIR / 'updated_large.png'
     plt.savefig(fname=savepath, transparent=True, format='png', bbox_inches='tight')
 
     print('\nCOMPLETE')
@@ -198,9 +201,9 @@ def main(args):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--small_path', default='./peppers-small.tiff',
+    parser.add_argument('--small_path', default=DATA_DIR / 'peppers-small.tiff',
                         help='Path to small image')
-    parser.add_argument('--large_path', default='./peppers-large.tiff',
+    parser.add_argument('--large_path', default=DATA_DIR / 'peppers-large.tiff',
                         help='Path to large image')
     parser.add_argument('--max_iter', type=int, default=150,
                         help='Maximum number of iterations')

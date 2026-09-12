@@ -1,6 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import util
+from pathlib import Path
+
+DATA_DIR = Path(__file__).parent
 
 # quadratic parameterized model
 class QP:
@@ -106,7 +109,7 @@ def QP_model_initialization(train_path, valid_path):
     X_val, Y_val = util.load_dataset(valid_path)
     d = X.shape[1]
     
-    save_path = "implicitreg_quadratic_initialization"
+    save_path = DATA_DIR / "implicitreg_quadratic_initialization"
 
     # Use gradient descent to train a quadratically parameterized 
     # model with different initialization. Plot the curves of validation
@@ -127,7 +130,7 @@ def QP_model_batchsize(train_path, valid_path):
     X_val, Y_val = util.load_dataset(valid_path)
     d = X.shape[1]
     
-    save_path = "implicitreg_quadratic_batchsize"
+    save_path = DATA_DIR / "implicitreg_quadratic_batchsize"
 
     # Use SGD to train a quadratically parameterized model with
     # different batchsize. Plot the curves of validation
@@ -144,8 +147,8 @@ def QP_model_batchsize(train_path, valid_path):
     util.plot_training_and_validation_curves(log, save_path, label = labels)
 
 def implicitreg_main():
-    train_path = 'ir2_train.csv'
-    valid_path = 'ir2_valid.csv'
+       train_path = DATA_DIR / 'ir2_train.csv'
+       valid_path = DATA_DIR / 'ir2_valid.csv'
     QP_model_initialization(train_path, valid_path)
     QP_model_batchsize(train_path, valid_path)
 

@@ -2,6 +2,9 @@ import argparse
 import numpy as np
 import matplotlib.pyplot as plt
 from experiment import J, update_theta, gradient_descend, A, theta_0
+from pathlib import Path
+
+DATA_DIR = Path(__file__).parent
 
 angle = np.pi/4
 R = np.array([[np.cos(angle), -np.sin(angle)],
@@ -44,7 +47,7 @@ def plot_trajectory(trajectories, lrs):
     plt.xlim((-2, 2))
     plt.ylim((-2, 2))
     plt.title('Original A Trajectory')
-    plt.savefig('trajectories.png')
+    plt.savefig(DATA_DIR / 'trajectories.png')
 
 def plot_trajectory_rotated(trajectories, lrs):
     num_points = 50
@@ -60,7 +63,7 @@ def plot_trajectory_rotated(trajectories, lrs):
     plt.xlim((-2, 2))
     plt.ylim((-2, 2))
     plt.title('Rotated A Trajectory')
-    plt.savefig('trajectories_rotated.png')
+    plt.savefig(DATA_DIR / 'trajectories_rotated.png')
 
 def print_num_iterations(trajectories, lrs, prefix):
     for t, lr in zip(trajectories, lrs):

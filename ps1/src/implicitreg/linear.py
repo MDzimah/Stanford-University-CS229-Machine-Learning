@@ -2,6 +2,9 @@ import numpy as np
 from scipy.linalg import null_space
 import matplotlib.pyplot as plt
 import util
+from pathlib import Path
+
+DATA_DIR = Path(__file__).parent
 
 def generate_plot(betas, X, Y, X_val, Y_val, save_path):
     """Generate a scatter plot of validation error vs. norm
@@ -28,10 +31,10 @@ def generate_plot(betas, X, Y, X_val, Y_val, save_path):
     util.plot_points(norms, val_err, save_path)
 
 def linear_model_main():
-    save_path_linear = "implicitreg_linear"
+    save_path_linear = DATA_DIR / "implicitreg_linear"
     
-    train_path = 'ir1_train.csv'
-    valid_path = 'ir1_valid.csv'
+    train_path = DATA_DIR / 'ir1_train.csv'
+    valid_path = DATA_DIR / 'ir1_valid.csv'
     X, Y = util.load_dataset(train_path)
     X_val, Y_val = util.load_dataset(valid_path)
     

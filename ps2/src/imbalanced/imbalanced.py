@@ -3,9 +3,11 @@ import util
 import sys
 from random import random
 import matplotlib.pyplot as plt
+from pathlib import Path
 
+DATA_DIR = Path(__file__).parent
 
-sys.path.append('../logreg_stability')
+sys.path.append(str(DATA_DIR.parent / 'logreg_stability'))
 
 ### NOTE : You need to complete logreg implementation first! If so, make sure to set the regularization weight to 0.
 from logreg import LogisticRegression
@@ -27,8 +29,9 @@ def main(train_path, validation_path, save_path):
         validation_path: Path to CSV file containing validation set.
         save_path: Path to save predictions.
     """
-    output_path_naive = save_path.replace(WILDCARD, 'naive')
-    output_path_upsampling = save_path.replace(WILDCARD, 'upsampling')
+    save_path = Path(save_path)
+    output_path_naive = save_path.with_name(save_path.name.replace(WILDCARD, 'naive'))
+    output_path_upsampling = save_path.with_name(save_path.name.replace(WILDCARD, 'upsampling'))
 
     # *** START CODE HERE ***
     
@@ -37,6 +40,6 @@ pass
 # *** END CODE HERE
 
 if __name__ == '__main__':
-    main(train_path='train.csv',
-        validation_path='validation.csv',
-        save_path='imbalanced_X_pred.txt')
+    main(train_path=DATA_DIR / 'train.csv',
+        validation_path=DATA_DIR / 'validation.csv',
+        save_path=DATA_DIR / 'imbalanced_X_pred.txt')

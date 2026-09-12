@@ -1,6 +1,9 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import util
+from pathlib import Path
+
+DATA_DIR = Path(__file__).parent
 
 
 def main(train_path, save_path):
@@ -103,9 +106,9 @@ pass
 
 if __name__ == '__main__':
     print('==== Training model on data set A ====')
-    main(train_path='ds1_a.csv',
-         save_path='logreg_pred_a_no-reg.png')
+        main(train_path=DATA_DIR / 'ds1_a.csv',
+            save_path=DATA_DIR / 'logreg_pred_a_no-reg.png')
 
     print('\n==== Training model on data set B ====')
-    main(train_path='ds1_b.csv',
-         save_path='logreg_pred_b_no-reg.png')
+        main(train_path=DATA_DIR / 'ds1_b.csv',
+            save_path=DATA_DIR / 'logreg_pred_b_no-reg.png')

@@ -1,6 +1,9 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import os
+from pathlib import Path
+
+DATA_DIR = Path(__file__).parent
 
 PLOT_COLORS = ['red', 'green', 'blue', 'orange']  # Colors for your plots
 K = 4           # Number of Gaussians in the mixture model
@@ -14,7 +17,7 @@ def main(is_semi_supervised, trial_num):
           .format('semi-supervised' if is_semi_supervised else 'unsupervised'))
 
     # Load dataset
-    train_path = os.path.join('.', 'train.csv')
+    train_path = DATA_DIR / 'train.csv'
     x_all, z_all = load_gmm_dataset(train_path)
 
     # Split into labeled and unlabeled examples
@@ -152,7 +155,7 @@ def plot_gmm_preds(x, z, with_supervision, plot_id):
         plt.scatter(x_1, x_2, marker='.', c=color, alpha=alpha)
 
     file_name = 'pred{}_{}.pdf'.format('_ss' if with_supervision else '', plot_id)
-    save_path = os.path.join('.', file_name)
+    save_path = DATA_DIR / file_name
     plt.savefig(save_path)
 
 

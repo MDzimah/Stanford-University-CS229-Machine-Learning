@@ -2,6 +2,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import argparse
 import os
+from pathlib import Path
+
+DATA_DIR = Path(__file__).parent
 
 def softmax(x):
     """
@@ -239,7 +242,7 @@ def read_data(images_file, labels_file):
     return x, y
 
 def run_train_test(name, all_data, all_labels, backward_prop_func, num_epochs, plot=True):
-    param_file = f'./{name}_params.npy'
+    param_file = DATA_DIR / f'{name}_params.npy'
     
     if os.path.exists(param_file):
         results = np.load(param_file, allow_pickle=True).item()
@@ -286,7 +289,7 @@ def run_train_test(name, all_data, all_labels, backward_prop_func, num_epochs, p
         ax2.set_ylabel('accuracy')
         ax2.legend()
 
-        fig.savefig('./' + name + '.pdf')
+        fig.savefig(DATA_DIR / (name + '.pdf'))
 
     accuracy = nn_test(all_data['test'], all_labels['test'], params)
     print('For model %s, got accuracy: %f' % (name, accuracy))
@@ -300,7 +303,7 @@ def main(plot=True):
     args = parser.parse_args()
 
     np.random.seed(100)
-    train_data, train_labels = read_data('./images_train.csv', './labels_train.csv')
+    train_data, train_labels = read_data(DATA_DIR / 'images_train.csv', DATA_DIR / 'labels_train.csv')
     # convert labels to one-hot embeddings e_y.
     train_labels = one_hot_labels(train_labels)
     p = np.random.permutation(60000)
@@ -317,7 +320,7 @@ def main(plot=True):
     train_data = (train_data - mean) / std
     dev_data = (dev_data - mean) / std
 
-    test_data, test_labels = read_data('./images_test.csv', './labels_test.csv')
+    test_data, test_labels = read_data(DATA_DIR / 'images_test.csv', DATA_DIR / 'labels_test.csv')
     # convert labels to one-hot embeddings e_y.
     test_labels = one_hot_labels(test_labels)
     test_data = (test_data - mean) / std

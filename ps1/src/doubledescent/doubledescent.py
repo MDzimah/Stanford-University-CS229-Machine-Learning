@@ -1,5 +1,8 @@
 import numpy as np
+from pathlib import Path
 import util
+
+DATA_DIR = Path(__file__).parent
 
 # Dimension of x
 d = 500
@@ -56,11 +59,11 @@ def ridge_regression(train_path, validation_path):
 if __name__ == '__main__':
     val_err = []
     for n in n_list:
-        val_err.append(regression(train_path='train%d.csv' % n, validation_path='validation.csv'))
-    util.plot(val_err, 'unreg.png', n_list)
+        val_err.append(regression(train_path=DATA_DIR / ('train%d.csv' % n), validation_path=DATA_DIR / 'validation.csv'))
+    util.plot(val_err, DATA_DIR / 'unreg.png', n_list)
 
     val_errs = []
     for n in n_list:
-        val_errs.append(ridge_regression(train_path='train%d.csv' % n, validation_path='validation.csv'))
+        val_errs.append(ridge_regression(train_path=DATA_DIR / ('train%d.csv' % n), validation_path=DATA_DIR / 'validation.csv'))
     val_errs = np.asarray(val_errs).T
-    util.plot_all(val_errs, 'reg.png', n_list)
+    util.plot_all(val_errs, DATA_DIR / 'reg.png', n_list)
