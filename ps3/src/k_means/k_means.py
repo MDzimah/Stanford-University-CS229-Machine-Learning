@@ -8,6 +8,7 @@ import random
 from pathlib import Path
 
 DATA_DIR = Path(__file__).parent
+PLOTS_DIR = DATA_DIR / 'plots'
 
 
 def init_centroids(num_clusters, image):
@@ -141,6 +142,8 @@ def calculate_closest_centroids(centroids, image):
     
 def main(args):
 
+    PLOTS_DIR.mkdir(exist_ok=True)
+
     # Setup
     max_iter = args.max_iter
     print_every = args.print_every
@@ -157,7 +160,7 @@ def main(args):
     plt.imshow(image)
     plt.title('Original small image')
     plt.axis('off')
-    savepath = DATA_DIR / 'orig_small.png'
+    savepath = PLOTS_DIR / 'orig_small.png'
     plt.savefig(savepath, transparent=True, format='png', bbox_inches='tight')
 
     # Initialize centroids
@@ -179,7 +182,7 @@ def main(args):
     plt.imshow(image)
     plt.title('Original large image')
     plt.axis('off')
-    savepath = DATA_DIR / 'orig_large.png'
+    savepath = PLOTS_DIR / 'orig_large.png'
     plt.savefig(fname=savepath, transparent=True, format='png', bbox_inches='tight')
 
     # Update large image with centroids calculated on small image
@@ -193,7 +196,7 @@ def main(args):
     plt.imshow(image_clustered)
     plt.title('Updated large image')
     plt.axis('off')
-    savepath = DATA_DIR / 'updated_large.png'
+    savepath = PLOTS_DIR / 'updated_large.png'
     plt.savefig(fname=savepath, transparent=True, format='png', bbox_inches='tight')
 
     print('\nCOMPLETE')

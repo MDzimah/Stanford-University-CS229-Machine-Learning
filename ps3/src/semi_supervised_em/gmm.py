@@ -4,6 +4,7 @@ import os
 from pathlib import Path
 
 DATA_DIR = Path(__file__).parent
+PLOTS_DIR = DATA_DIR / 'plots'
 
 PLOT_COLORS = ['red', 'green', 'blue', 'orange']  # Colors for your plots
 K = 4           # Number of Gaussians in the mixture model
@@ -144,6 +145,7 @@ def plot_gmm_preds(x, z, with_supervision, plot_id):
 
     NOTE: You do not need to edit this function.
     """
+    PLOTS_DIR.mkdir(exist_ok=True)
     plt.figure(figsize=(12, 8))
     plt.title('{} GMM Predictions'.format('Semi-supervised' if with_supervision else 'Unsupervised'))
     plt.xlabel('x_1')
@@ -155,7 +157,7 @@ def plot_gmm_preds(x, z, with_supervision, plot_id):
         plt.scatter(x_1, x_2, marker='.', c=color, alpha=alpha)
 
     file_name = 'pred{}_{}.pdf'.format('_ss' if with_supervision else '', plot_id)
-    save_path = DATA_DIR / file_name
+    save_path = PLOTS_DIR / file_name
     plt.savefig(save_path)
 
 

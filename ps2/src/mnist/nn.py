@@ -5,6 +5,7 @@ import os
 from pathlib import Path
 
 DATA_DIR = Path(__file__).parent
+PLOTS_DIR = DATA_DIR / 'plots'
 
 def softmax(x):
     """
@@ -271,6 +272,7 @@ def run_train_test(name, all_data, all_labels, backward_prop_func, num_epochs, p
     t = np.arange(num_epochs)
 
     if plot:
+        PLOTS_DIR.mkdir(exist_ok=True)
         fig, (ax1, ax2) = plt.subplots(2, 1)
 
         ax1.plot(t, cost_train,'r', label='train')
@@ -289,7 +291,7 @@ def run_train_test(name, all_data, all_labels, backward_prop_func, num_epochs, p
         ax2.set_ylabel('accuracy')
         ax2.legend()
 
-        fig.savefig(DATA_DIR / (name + '.pdf'))
+        fig.savefig(PLOTS_DIR / (name + '.pdf'))
 
     accuracy = nn_test(all_data['test'], all_labels['test'], params)
     print('For model %s, got accuracy: %f' % (name, accuracy))
