@@ -13,26 +13,25 @@
 
 ## Setup for Coding Parts
 
-1. Install [Miniconda](https://docs.conda.io/en/latest/miniconda.html)
-  - Conda is a package manager that sandboxes your project’s dependencies in a virtual environment
-  - Miniconda contains Conda and its dependencies with no extra packages by default (as opposed to Anaconda, which installs some extra packages)
-2. Extract the zip file and run `conda env create -f environment.yml` from inside the extracted directory.
-  - This creates a Conda environment called `cs229`
-3. Run `source activate cs229`
-  - This activates the `cs229` environment
-  - Do this each time you want to write/test your code
-4. (Optional) If you use PyCharm:
+1. Set up a virtual environment using the environment manager of your choice. The setup used here is [uv](https://docs.astral.sh/uv/), a fast, Rust-based Python package and environment manager:
+  - Run `uv venv` to create a `.venv` directory.
+  - Activate it with `.venv\Scripts\activate` on Windows or `source .venv/bin/activate` on macOS/Linux.
+  - Run `uv pip install -r environment.txt` to install the required packages.
+  - The Python interpreter is `.venv\Scripts\python.exe` on Windows or `.venv/bin/python` on macOS/Linux.
+  - Other tools such as Conda, `venv`, Poetry, or virtualenv are also fine; create an environment and install the packages listed in `environment.txt` with the tool you choose.
+2. In VS Code or another editor, select the Python interpreter from the `.venv` directory created above. Do this each time you want to write/test your code.
+3. (Optional) If you use PyCharm:
   - Open the `src` directory in PyCharm
   - Go to `PyCharm` > `Preferences` > `Project` > `Project interpreter`
   - Click the gear in the top-right corner, then `Add`
   - Select `Conda environment` > `Existing environment` > Button on the right with `…`
-  - Select `/Users/YOUR_USERNAME/miniconda3/envs/cs229/bin/python`
+  - Select the Python interpreter from the `.venv` directory you created
   - Select `OK` then `Apply`
-5. Notice some coding problems come with `util.py` file. In it you have access to methods that do the following tasks:
+4. Notice some coding problems come with `util.py` file. In it you have access to methods that do the following tasks:
   - Load a dataset in the CSV format provided in the problem
   - Add an intercept to a dataset (*i.e.,* add a new column of 1s to the design matrix)
   - Plot a dataset and a linear decision boundary. Some plots might require modified plotting code, but you can use this as a starting point.
-7. Notice that start codes are provided in each problem directory (e.g. `gda.py`, `posonly.py`)
+5. Notice that start codes are provided in each problem directory (e.g. `gda.py`, `posonly.py`)
   - Within each starter file, there are highlighted regions of the code with the comments ** START CODE HERE ** and ** END CODE HERE **. You are strongly suggested to make your changes only within this region. You can add helper functions within this region as well.
-8. Once you are done with all the code changes, create a zip archive containing the required source files.
-  - You must upload this archive to Gradescope.
+6. If you are submitting the problem set, create a zip archive containing the required source files.
+  - Upload this archive to Gradescope according to the submission instructions.
