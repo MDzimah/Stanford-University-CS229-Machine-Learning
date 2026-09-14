@@ -36,9 +36,10 @@ class QP:
 
         for t in range(max_step):
             # *** START CODE HERE ***
-            
-# TODO: implement this section.
-pass
+            grad_theta, grad_phi = self.gradient(X, Y)
+            self.theta = self.theta - eta*grad_theta
+            self.phi = self.phi - eta*grad_phi
+
 # *** END CODE HERE ***
             if verbose:
                 log_steps.append(t)
@@ -77,9 +78,10 @@ pass
             Y_batch = Y[idx_batch]
 
             # *** START CODE HERE ***
+            grad_theta, grad_phi = self.gradient(X_batch, Y_batch)
+            self.theta = self.theta - eta*grad_theta
+            self.phi = self.phi - eta*grad_phi
             
-# TODO: implement this section.
-pass
 # *** END CODE HERE ***
             if verbose:
                 log_steps.append(t)
@@ -90,15 +92,20 @@ pass
     
     def predict(self, X):
         return X.dot(self.theta ** 2 - self.phi ** 2)
-    
+
+    # *** START CODE HERE ***
+    def aux(self, param, X, Y):
+        return ((X @ (self.theta**2 - self.phi**2)-Y) @ (X * param))/X.shape[0]
+
     def gradient(self, X, Y):
         """Return the gradient w.r.t. theta and phi
         """
         # Print the gradient calculation components
-        # *** START CODE HERE ***
-        
-# TODO: implement this section.
-pass
+        grad_theta = self.aux(self.theta, X, Y)
+        grad_phi = -self.aux(self.phi, X, Y)
+        print(f'Gradient of theta = {grad_theta}\nGradient of phi = {grad_phi}')
+        return grad_theta, grad_phi
+    
 # *** END CODE HERE ***
     
     def validation(self, X, Y):
@@ -108,8 +115,10 @@ def QP_model_initialization(train_path, valid_path):
     X, Y = util.load_dataset(train_path)
     X_val, Y_val = util.load_dataset(valid_path)
     d = X.shape[1]
-    
-    save_path = DATA_DIR / "implicitreg_quadratic_initialization"
+
+    plots_dir = DATA_DIR / "plots"
+    plots_dir.mkdir(exist_ok=True)
+    save_path = plots_dir / "impreg_quad_ini.png"
 
     # Use gradient descent to train a quadratically parameterized 
     # model with different initialization. Plot the curves of validation
@@ -129,8 +138,10 @@ def QP_model_batchsize(train_path, valid_path):
     X, Y = util.load_dataset(train_path)
     X_val, Y_val = util.load_dataset(valid_path)
     d = X.shape[1]
-    
-    save_path = DATA_DIR / "implicitreg_quadratic_batchsize"
+
+    plots_dir = DATA_DIR / "plots"
+    plots_dir.mkdir(exist_ok=True)
+    save_path = plots_dir / "impreg_quad_batchsize.png"
 
     # Use SGD to train a quadratically parameterized model with
     # different batchsize. Plot the curves of validation
@@ -147,8 +158,8 @@ def QP_model_batchsize(train_path, valid_path):
     util.plot_training_and_validation_curves(log, save_path, label = labels)
 
 def implicitreg_main():
-       train_path = DATA_DIR / 'ir2_train.csv'
-       valid_path = DATA_DIR / 'ir2_valid.csv'
+    train_path = DATA_DIR / 'ir2_train.csv'
+    valid_path = DATA_DIR / 'ir2_valid.csv'
     QP_model_initialization(train_path, valid_path)
     QP_model_batchsize(train_path, valid_path)
 

@@ -31,31 +31,30 @@ def generate_plot(betas, X, Y, X_val, Y_val, save_path):
     util.plot_points(norms, val_err, save_path)
 
 def linear_model_main():
-    save_path_linear = DATA_DIR / "implicitreg_linear"
+    plots_dir = DATA_DIR / "plots"
+    plots_dir.mkdir(exist_ok=True)
+    save_path_linear = plots_dir / "impreg_lin.png"
     
     train_path = DATA_DIR / 'ir1_train.csv'
     valid_path = DATA_DIR / 'ir1_valid.csv'
     X, Y = util.load_dataset(train_path)
     X_val, Y_val = util.load_dataset(valid_path)
-    
-    beta_0 = None
-    # *** START CODE HERE ***
-    
-# TODO: implement this section.
-pass
-# *** END CODE HERE ***
-    
-    assert(np.allclose(X.dot(beta_0), Y))
-    
-    # ns[i] is orthogonal to all the inputs in the training dataset
-    # to help you understand the starter code, check the dimension 
-    # of ns before you use it
-    ns = null_space(X)
 
     # *** START CODE HERE ***
+
+    # beta_0 = X.T @ (X @ X.T)^-1 @ y iff X @ X.T @ (X^-1)^T @ beta_0 
+    # = X @ X.T @ v = beta_0
+    v = np.linalg.solve(X @ X.T, Y)
+    beta_0 = X.T @ v
+
+    assert(np.allclose(X.dot(beta_0), Y))
+
+    ns = null_space(X)
+    betas = [beta_0.copy()]
+    for j in [0, 1, 2]:
+        betas.append(beta_0 + ns[:, j])
+    generate_plot(betas, X, Y, X_val, Y_val, save_path_linear)
     
-# TODO: implement this section.
-pass
 # *** END CODE HERE ***
 
 if __name__ == '__main__':
