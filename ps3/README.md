@@ -33,5 +33,3 @@
   - Plot a dataset and a linear decision boundary. Some plots might require modified plotting code, but you can use this as a starting point.
 5. Notice that start codes are provided in each problem directory (e.g. `gda.py`, `posonly.py`)
   - Within each starter file, there are highlighted regions of the code with the comments ** START CODE HERE ** and ** END CODE HERE **. You are strongly suggested to make your changes only within this region. You can add helper functions within this region as well.
-6. If you are submitting the problem set, create a zip archive containing the required source files.
-  - Upload this archive to Gradescope according to the submission instructions.
