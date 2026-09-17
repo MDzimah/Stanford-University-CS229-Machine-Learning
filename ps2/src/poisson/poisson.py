@@ -18,9 +18,20 @@ def main(lr, train_path, eval_path, save_path):
     x_train, y_train = util.load_dataset(train_path, add_intercept=True)
 
     # *** START CODE HERE ***
-    
-# TODO: implement this section.
-pass
+    clf = PoissonRegression(lr, theta_0 = np.zeros(x_train.shape[1]))
+    x_eval, y_eval = util.load_dataset(eval_path, add_intercept=True)
+    clf.fit(x_train, y_train)
+
+    predictions = clf.predict(x_eval)
+
+    plt.figure()
+    plt.scatter(y_eval, predictions, alpha=0.5, color='blue')
+    plt.xlabel('True Count')
+    plt.ylabel('Predicted Expected Count')
+    plt.title('Poisson Regression: True vs Predicted Counts')
+
+    plt.savefig(DATA_DIR / 'poisson_scatter.png')
+
 # *** END CODE HERE ***
 
 
@@ -58,10 +69,13 @@ class PoissonRegression:
             x: Training example inputs. Shape (n_examples, dim).
             y: Training example labels. Shape (n_examples,).
         """
-        # *** START CODE HERE ***
-        
-# TODO: implement this section.
-pass
+        # *** START CODE HERE ***        
+        i = 0
+        while i < self.max_iter:
+            old_theta = np.copy(self.theta)
+            self.theta = self.theta + self.step_size * ((y - np.exp(x @ self.theta)) @ x)
+            if np.linalg.norm(self.theta - old_theta) < self.eps: break 
+            i += 1
 # *** END CODE HERE ***
 
     def predict(self, x):
@@ -74,9 +88,8 @@ pass
             Floating-point prediction for each input, shape (n_examples,).
         """
         # *** START CODE HERE ***
+        return np.exp(x @ self.theta)
         
-# TODO: implement this section.
-pass
 # *** END CODE HERE ***
 
 if __name__ == '__main__':
