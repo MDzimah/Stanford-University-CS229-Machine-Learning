@@ -1,5 +1,5 @@
 # CS229  Spring 2026 notes / Summer 2025 solutions
-This repository contains my notes on the Spring 2026 course and my solutions to the Summer 2025 problem sets. Both offerings of the course are almost identical. The written portions were done by hand instead of typed in LaTeX.
+This repository contains my notes on the Spring 2026 course and my solutions to the Summer 2025 problem sets. Both editions of the course are almost identical. The written portions were done by hand instead of typed in LaTeX.
 
 ## Course overview
 The course delivers a rigorous, mathematical introduction to statistical pattern recognition, learning theory and modern AI. Rather than treating ML as a collection of black-box software tools, the course emphasizes deriving algorithms from first-principles math and implementing them from scratch in Python.
