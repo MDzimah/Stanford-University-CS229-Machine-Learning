@@ -29,7 +29,6 @@ def main(lr, train_path, eval_path, save_path):
     plt.xlabel('True Count')
     plt.ylabel('Predicted Expected Count')
     plt.title('Poisson Regression: True vs Predicted Counts')
-
     plt.savefig(DATA_DIR / 'poisson_scatter.png')
 
 # *** END CODE HERE ***

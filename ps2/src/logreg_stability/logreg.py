@@ -8,7 +8,7 @@ PLOTS_DIR = DATA_DIR / 'plots'
 PLOTS_DIR.mkdir(exist_ok=True)
 
 
-def main(train_path, save_path):
+def main(train_path, save_path, reg = False):
     """Problem: Logistic regression with gradient descent.
 
     Args:
@@ -18,9 +18,10 @@ def main(train_path, save_path):
     x_train, y_train = util.load_csv(train_path, add_intercept=True)
 
     # *** START CODE HERE ***
-    
-# TODO: implement this section.
-pass
+    clf = LogisticRegression()
+    clf.fit(x_train, y_train, reg)
+    util.plot(x_train, y_train, clf.theta, save_path)
+
 # *** END CODE HERE ***
 
 
@@ -47,24 +48,22 @@ class LogisticRegression:
         self.max_iter = max_iter
         self.eps = eps
         self.verbose = verbose
-
         # *** START CODE HERE ***
-        
-# TODO: implement this section.
-pass
-# *** END CODE HERE ***
-        
-    
+        self.reg_rate = reg_rate
+    # *** END CODE HERE ***
+
     def boundary(self, x):
         """
         Outputs the y-values of the decision boundary (p(y|x) = 0.5) for the input x-values
         """    
-        if self.theta is None:
-            self.theta = np.zeros(x.shape[1])
+        # *** START CODE HERE ***
+        # 1/(1 + e^-z) = 0.5 iff z = 0
+        # So, theta[0] + theta[1]x1 + theta[2]x2 = 0
+        return -(self.theta[0] + self.theta[1]*x)/self.theta[2]
+                
+    # *** END CODE HERE ***
 
-        return (-self.theta[0] - self.theta[1] * x) / self.theta[2]
-
-    def fit(self, x, y):
+    def fit(self, x, y, reg = False):
         """Run gradient descent to minimize J(theta) for logistic regression.
 
         Args:
@@ -72,24 +71,41 @@ pass
             y: Training example labels. Shape (n_examples,).
         """
         # *** START CODE HERE ***
-        
-# TODO: implement this section.
-pass
-# *** END CODE HERE ***
+        if self.theta is None: self.theta = np.zeros(x.shape[1])
+
+        for i in range(self.max_iter): 
+            old_theta = self.theta
+            self.theta = self.theta - self.learning_rate*self.loss_gradient(x, y, reg)
+            if np.linalg.norm(old_theta - self.theta) < self.eps: break
+            if i % 5000 == 0 and self.verbose: 
+                print(f'Loss in iteration {i}: {self.loss(x, y, reg)}')
+                print(f'Parameters: {self.theta}')
+                print('==============================')
+
+        if self.verbose:
+            print(f'Loss in iteration {i}: {self.loss(x, y, reg)}')
+            print(f'Parameters: {self.theta}')
+            print('==============================') 
+    # *** END CODE HERE ***
     
-    def loss(self, x,y):
-        if self.theta is None:
-            return np.zeros(x.shape[1])
-        
+    def loss(self, x,y, reg):
+        # *** START CODE HERE ***
         preds = self.predict(x)
-        return - np.sum(y * np.log(preds + 1e-5) + (1-y) * np.log(1 - preds+ 1e-5), axis=0) + 0.5 * self.reg_rate * np.linalg.norm(self.theta[1:]) ** 2
+
+        loss_no_reg = -sum(y*np.log(preds + self.eps) + (1-y)*np.log(1 - preds + self.eps))/x.shape[0]
+        if not reg: return loss_no_reg       
+        else: return loss_no_reg + (self.reg_rate/2)*(np.linalg.norm(self.theta)**2)
+
+    # *** END CODE HERE ***
     
-    def loss_gradient(self, x,y):
-        if self.theta is None:
-            return np.zeros(x.shape[1])
-        preds = self.predict(x)
-        grad = x.T @ (preds - y) + self.reg_rate * np.concatenate(([0], self.theta[1:]))
-        return grad
+    def loss_gradient(self, x,y, reg):
+        # *** START CODE HERE ***
+        # Derived by chain rule d Ji/d theta_j = (d Ji/d h_theta)*(d h_theta/d z)*(d z/d theta_j)
+        # where z = theta.T @ x. For regularized case it is trivial
+        if not reg: return x.T @ (self.predict(x) - y)/x.shape[0]
+        else: return x.T @ (self.predict(x) - y)/x.shape[0] + self.reg_rate*self.theta
+
+    # *** END CODE HERE ***
 
     def predict(self, x):
         """Return predicted probabilities given new inputs x.
@@ -101,16 +117,26 @@ pass
             Outputs of shape (n_examples,).
         """
         # *** START CODE HERE ***
-        
-# TODO: implement this section.
-pass
-# *** END CODE HERE ***
+        return 1/(1 + np.exp(-x @ self.theta))
+    
+    # *** END CODE HERE ***
 
 if __name__ == '__main__':
     print('==== Training model on data set A ====')
-        main(train_path=DATA_DIR / 'ds1_a.csv',
+    main(train_path=DATA_DIR / 'ds1_a.csv',
             save_path=PLOTS_DIR / 'logreg_pred_a_no-reg.png')
 
     print('\n==== Training model on data set B ====')
-        main(train_path=DATA_DIR / 'ds1_b.csv',
+    main(train_path=DATA_DIR / 'ds1_b.csv',
             save_path=PLOTS_DIR / 'logreg_pred_b_no-reg.png')
+
+    # *** START CODE HERE ***
+    print('==== Training model on data set A (with regularisation)====')
+    main(train_path=DATA_DIR / 'ds1_a.csv',
+                save_path=PLOTS_DIR / 'logreg_pred_a_with-reg.png', reg = True)
+    
+    print('\n==== Training model on data set B (with regularisation)====')
+    main(train_path=DATA_DIR / 'ds1_b.csv',
+            save_path=PLOTS_DIR / 'logreg_pred_b_with-reg.png', reg = True)
+
+# *** END CODE HERE ***
